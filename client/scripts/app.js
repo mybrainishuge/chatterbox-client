@@ -70,7 +70,6 @@ class App {
 
   // Add a new message to chat window and send to server
   addMessage(message) {
-    // var messageString = `<div><p><span class='username' data-username="${filterXSS(message.username)}">${filterXSS(message.username)}</span>: ${filterXSS(message.text)}</p></div>`;
     this.fetch();
     this.send(message);
     $('.chat-window').animate({scrollTop: $('.chat-window')[0].scrollHeight }, 1000);
@@ -84,7 +83,11 @@ class App {
         i = this.messages.length;
       } else if ( this.messages[i].username && this.messages[i].text && this.messages[i].roomname ) {
         if (this.messages[i].roomname === $('#roomSelect').val() || $('#roomSelect').val() === 'abyss') {
-          newMessages = `<div><p><span class='username' data-username="${filterXSS(this.messages[i].username)}">${filterXSS(this.messages[i].username)}</span>: ${filterXSS(this.messages[i].text)}</p></div>${newMessages}`;
+          var cssClass = 'username';
+          if ( this.friends[this.messages[i].username] ) {
+            cssClass += ' text-bold';
+          }
+          newMessages = `<div><p><span class='${cssClass}' data-username="${filterXSS(this.messages[i].username)}">${filterXSS(this.messages[i].username)}</span>: ${filterXSS(this.messages[i].text)}</p></div>${newMessages}`;
         }
         if (!this.rooms.hasOwnProperty(this.messages[i].roomname)) {
           this.addRoom(this.messages[i].roomname);
@@ -99,12 +102,20 @@ class App {
   loadMessages(messages) {
     var $newMessages = $(messages);
     
-    $newMessages.find('.username').on( 'click', (event) => { this.addFriend($(event.currentTarget).attr('data-username')); });
+    $newMessages.find('.username').on( 'click', (event) => { 
+      var clickedUsername = $(event.currentTarget).attr('data-username');
+      this.addFriend(clickedUsername); 
+      $(`.username[data-username="${clickedUsername}"`).addClass('text-bold');
+    });
     var atBottom = $('.chat-window').scrollTop() + 500 === $('.chat-window')[0].scrollHeight;
     $('#chats').append($newMessages); 
     if ( $newMessages.length && atBottom) {
       $('.chat-window').animate({scrollTop: $('.chat-window')[0].scrollHeight }, 1000);
     }
+    // var friendMessages = $('.username').filter( (element) => {
+    //   return this.friends.hasOwnProperty(element.attr('data-username'));
+    // });
+    // friendMessages.addClass('text-bold');
   }
 
   // Add a new room
@@ -116,9 +127,9 @@ class App {
 
   // Add a friend
   addFriend(username) {
-    if (!this.friends.hasOwnProperty(username)) {
+    if (!this.friends.hasOwnProperty(username) && username !== window.location.search.split('=')[1].replace(/%20/g, ' ')) {
       this.friends[username] = `<div>${username}</div>`;
-      $('.friends').append(this.friends[username]);
+      $('.friends-list').append(this.friends[username]);
     }
   }
 

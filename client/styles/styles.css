@@ -1,13 +1,14 @@
 body {
-  background-color: #388BB2;
+  background-color: #4F90B2;
 }
+
 
 .title {
 
 }
 
 .room {
-  background-color: #B28751;
+  background-color: #B29167;
   height: 50px;
   line-height: 50px;
   margin: 0 0 10px 0;
@@ -16,7 +17,7 @@ body {
 }
 
 .submission {
-  background-color: #B28751;
+  background-color: #B29167;
   line-height: 50px;
   height: 50px;
   border-radius: 0 0 0 10px;
@@ -24,28 +25,37 @@ body {
 }
 
 
-.friends {
-  background-color: #84D7FF;
-  color: #84D7FF;
+.friends-list {
+  background-color: #A3DFFF;
+  color: #A3DFFF;
+  /*background-color: #B28751;
+  color: #B28751;*/
   height: 620px;
-  margin: 0 0 0 10px;
-  width: 2%;
+  width: 40%;
+  padding-left: 10px;
   border-radius: 0 10px 10px 0;
   box-shadow: 10px 10px 100px 0px rgba(0,0,0,0.75);
-  transition-property: width, color;
-  transition-duration: 1s;
+  transition-property: width, color, background-color;
+  transition-duration: 500ms;
   transition-timing-function: linear;
   overflow: hidden;
   white-space: nowrap;
+  position: absolute;
 }
 
-.friends:hover {
+.friends-list:hover {
+  background-color: #FFE2BD;
   color: black;
-  width: 20%;
+  width: 150%;
+}
+
+.friends {
+  padding-left: 10px;
+  position: relative;
 }
 
 .chat-window {
-  background-color: #FFD39D;
+  background-color: #FFE2BD;
   height: 500px;
   overflow-y: scroll;
   margin: 0 0 10px 0;
@@ -71,4 +81,8 @@ body {
 
 .form-control#message {
   width: 92%;
+}
+
+.text-bold {
+  font-weight: 900;
 }
