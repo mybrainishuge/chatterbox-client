@@ -12,6 +12,7 @@ class App {
       e.preventDefault();
       this.handleSubmit();
     });
+    this.fetch();
   }
   send(message) {
     $.ajax({
@@ -21,6 +22,7 @@ class App {
       contentType: 'application/json',
       success: (data) => {
         console.log('chatterbox: Message sent');
+        $('#message').val('');
       },
       error: (data) => {
         console.error('chatterbox: Failed to send message', data);
@@ -33,10 +35,8 @@ class App {
       type: 'GET',
       contentType: 'application/json',
       success: (data) => {
-        console.log('Data', data);
         this.messages = data.results;
         this.fetchMessages();
-        console.log(data);
       },
       error: (data) => {
         console.error('chatterbox: Failed to send message', data);
@@ -47,25 +47,9 @@ class App {
     $('#chats').html('');
   }
   addMessage(message) {
-    this.loadMessages(`<div><p><span class='username'>${message.username}</span>: ${message.text}</p></div>`);
-  }
-  addRoom(room) {
-    $('#roomSelect').append(`<option value="${room}">${room}</option>`);
-  }
-  addFriend(username) {
-    this.friends[username] = username;
-  }
-  handleSubmit() {
-    var username = filterXSS(window.location.search.split('=')[1]);
-    var message = filterXSS($('#message').val());
-    var room = $('#roomSelect').val();
-    console.log('once');
-
-    this.addMessage({
-      username: username,
-      text: message,
-      room: room
-    });
+    var messageString = `<div><p><span class='username'>${message.username}</span>: ${message.text}</p></div>`;
+    this.loadMessages(messageString);
+    this.send(message);
   }
   fetchMessages() {
     var newMessages = '';
@@ -75,13 +59,32 @@ class App {
     this.loadMessages(newMessages);
   }
   loadMessages(messages) {
-    var $allMessages = $(messages);
-    $('#chats').append($allMessages);
-    $allMessages.find('.username').click( () => { this.addFriend(message.username); });
+    var $newMessages = $(filterXSS(messages));
+    // var $newMessages = $(messages);
+    $('#chats').append($newMessages);
+    $newMessages.find('.username').click( () => { this.addFriend(message.username); });
     $('.chat-window').animate({scrollTop: $('.chat-window')[0].scrollHeight }, 1000);
   }
-}
+  addRoom(room) {
+    var filteredRoom = filterXSS(room);
+    $('#roomSelect').append(`<option value="${filteredRoom}">${filteredRoom}</option>`);
+  }
+  addFriend(username) {
+    this.friends[username] = username;
+  }
+  handleSubmit() {
+    var username = filterXSS(window.location.search.split('=')[1]);
+    // var message = filterXSS($('#message').val());
+    var message = $('#message').val();
+    var room = $('#roomSelect').val();
 
+    this.addMessage({
+      username: username,
+      text: message,
+      roomname: room
+    });
+  } 
+}
 
 
 var app = new App();
