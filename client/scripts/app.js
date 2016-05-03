@@ -4,15 +4,29 @@ class App {
     this.friends = {};
     this.server = 'https://api.parse.com/1/classes/messages';
     this.messages = [];
+    this.lastUpdated = null;
+    this.rooms = {};
   }
 
   // Initialize application
   init() {
-    $('#send').unbind('submit').bind('submit', (e) => {
+    $('#send').unbind('click').bind('click', (e) => {
       e.preventDefault();
       this.handleSubmit();
     });
-    this.fetch();
+    $('#roomSelect').unbind('change').bind('change', (e) => {
+      e.preventDefault();
+      this.clearMessages();
+    });
+    $('#add-room').unbind('click').bind('click', (e) => {
+      e.preventDefault();
+      var $newRoom = $('#room-name').val();
+      this.addRoom($newRoom);
+      $('#roomSelect').val($newRoom);
+      $('#room-name').val('');
+      this.clearMessages();
+    });
+    setInterval(this.fetch.bind(this), 1000);
   }
 
   // Send message to server
@@ -51,32 +65,44 @@ class App {
   // Clear messages from chat window
   clearMessages() {
     $('#chats').html('');
+    this.lastUpdated = null;
   }
 
   // Add a new message to chat window and send to server
   addMessage(message) {
-    var messageString = `<div><p><span class='username'>${filterXSS(message.username)}</span>: ${filterXSS(message.text)}</p></div>`;
-    this.loadMessages(messageString);
+    // var messageString = `<div><p><span class='username' data-username="${filterXSS(message.username)}">${filterXSS(message.username)}</span>: ${filterXSS(message.text)}</p></div>`;
+    this.fetch();
     this.send(message);
+    $('.chat-window').animate({scrollTop: $('.chat-window')[0].scrollHeight }, 1000);
   }
 
   // Builds html elements to load fetched messages into chat window
   fetchMessages() {
     var newMessages = '';
-    this.messages.forEach(message => {
-      if( message.username && message.text ){
-        newMessages = `<div><p><span class='username' data-username="${filterXSS(message.username)}">${filterXSS(message.username)}</span>: ${filterXSS(message.text)}</p></div>${newMessages}`;
+    for ( var i = 0; i < this.messages.length; i++) {
+      if ( this.messages[i].objectId === this.lastUpdated) {
+        i = this.messages.length;
+      } else if ( this.messages[i].username && this.messages[i].text && this.messages[i].roomname ) {
+        if (this.messages[i].roomname === $('#roomSelect').val() || $('#roomSelect').val() === 'abyss') {
+          newMessages = `<div><p><span class='username' data-username="${filterXSS(this.messages[i].username)}">${filterXSS(this.messages[i].username)}</span>: ${filterXSS(this.messages[i].text)}</p></div>${newMessages}`;
+        }
+        if (!this.rooms.hasOwnProperty(this.messages[i].roomname)) {
+          this.addRoom(this.messages[i].roomname);
+        }
       }
-    });
+    }
+    this.lastUpdated = this.messages[0].objectId;
     this.loadMessages(newMessages);
   }
 
   // Load messages onto the chat window
   loadMessages(messages) {
     var $newMessages = $(messages);
-    $('#chats').append($newMessages);
-    $newMessages.find('.username').on( 'click', (event) => { console.log($(event.currentTarget).attr('data-username')) });
-    if( $('.chat-window').length > 0 ){ // Ensure chat-window exists before scrolling
+    
+    $newMessages.find('.username').on( 'click', (event) => { this.addFriend($(event.currentTarget).attr('data-username')); });
+    var atBottom = $('.chat-window').scrollTop() + 500 === $('.chat-window')[0].scrollHeight;
+    $('#chats').append($newMessages); 
+    if ( $newMessages.length && atBottom) {
       $('.chat-window').animate({scrollTop: $('.chat-window')[0].scrollHeight }, 1000);
     }
   }
@@ -85,20 +111,20 @@ class App {
   addRoom(room) {
     var filteredRoom = filterXSS(room);
     $('#roomSelect').append(`<option value="${filteredRoom}">${filteredRoom}</option>`);
+    this.rooms[filteredRoom] = filteredRoom;
   }
 
   // Add a friend
   addFriend(username) {
-    this.friends[username] = username;
-    for( var friend in this.friends ){
-      console.log(this.friends[friend]);
-      $('.friends').append(this.friends[friend]);
+    if (!this.friends.hasOwnProperty(username)) {
+      this.friends[username] = `<div>${username}</div>`;
+      $('.friends').append(this.friends[username]);
     }
   }
 
   // Handle message submission
   handleSubmit() {
-    var username = filterXSS(window.location.search.split('=')[1]);
+    var username = filterXSS(window.location.search.split('=')[1]).replace(/%20/g, ' ');
     var message = $('#message').val();
     var room = $('#roomSelect').val();
 

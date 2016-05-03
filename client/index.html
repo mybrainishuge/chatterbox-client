@@ -3,8 +3,9 @@
   <head>
     <meta charset="utf-8">
     <title>chatterbox</title>
-    <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles/styles.css">
+    
   </head>
 
   <body>
@@ -18,27 +19,48 @@
           <div class="row">
             <div class="col-xs-9">
               <div class="row">
+
+                <!-- Room Container -->
                 <div class="col-xs-12 room">
-                  <span> Room: </span>
-                  <select id="roomSelect">
-                    <option value="test">General</option>
-                  </select>
-                </div>
-                <div class="col-xs-12 chat">
                   <div class="row">
-                    <div class="col-xs-12 chat-window" id="chats"></div>
-                    <div class="col-xs-12 submission">
-                      <form id="send">
-                        <input type="text" placeholder="Type message here" autocomplete="off" id="message"/>
-                        <input type="submit" class="submit" value="Submit"/>
+                    <!-- Room Selector -->
+                    <div class="col-xs-4">
+                      <span> Room: </span>
+                      <select id="roomSelect">
+                        <option value="abyss">The Abyss</option>
+                      </select>
+                    </div>
+                    <!-- Add Room Field -->
+                    <div class="col-xs-8">
+                      <form>
+                        <input class="form-control" type="text" placeholder="Type room name here" autocomplete="off" id="room-name"/>
+                        <button class="btn btn-default" id="add-room">Add Room</button>
                       </form>
                     </div>
                   </div>
                 </div>
+
+                <!-- Chat Box -->
+                <div class="col-xs-12 chat">
+                  <div class="row">
+                    <div class="col-xs-12 chat-window" id="chats"></div>
+                    <div class="col-xs-12 submission">
+                      <form>
+                        <input class="form-control" type="text" placeholder="Type message here" autocomplete="off" id="message"/>
+                        <button class="btn btn-default" id="send">Send</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
-            <div class="col-xs-3 friends"></div>
-            <!-- </div> -->
+
+            <!-- Friends Panel -->
+            <div class="col-xs-2 friends">
+              <h3 class="text-center">Friends</h3>
+            </div>
+
           </div>
         </div>
       </div>
