@@ -7,9 +7,14 @@ class App {
     this.server = 'https://api.parse.com/1/classes/messages';
   }
   init() {
-    console.log('clicked');
-    $('#send .submit').click( () => {
-      console.log('clicked');
+    // $('#send .submit').click( () => {
+    //   console.log('clicked');
+    //   this.handleSubmit();
+    // });
+
+    $('#send').unbind('submit').bind('submit', (e) => {
+      e.preventDefault();
+      console.log(e,'d');
       this.handleSubmit();
     });
   }
@@ -33,7 +38,7 @@ class App {
       type: 'GET',
       contentType: 'application/json',
       success: function (data) {
-        console.log('chatterbox: Message sent');
+        console.log('Data', data);
       },
       error: function (data) {
         console.error('chatterbox: Failed to send message', data);
@@ -56,8 +61,9 @@ class App {
   }
   handleSubmit() {
     var username = window.location.search.split('=')[1];
-    var message = $('#message').val();
+    var message = filterXSS($('#message').val());
     var room = $('#roomSelect').val();
+    console.log('once');
 
     this.addMessage({
       username: username,
