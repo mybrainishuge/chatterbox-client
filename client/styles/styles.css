@@ -1,4 +1,4 @@
-body {
+/*body {
     background: #eee;
     text-align: center;
     padding: 0 25px;
@@ -87,4 +87,36 @@ form input[type=text] {
     color: #fff;
     background-color: #0090da;
 }
+
+*/
+
+.title {
+
+}
+
+.room {
+  border: 1px solid black;
+  height: 50px;
+  line-height: 50px;
+}
+
+.submission {
+  height: 50px;
+  border: 1px solid black;
+}
+
+
+.friends {
+  height: 600px;
+  border: 1px solid black;
+}
+
+.chat-window {
+  height: 500px;
+  overflow-y: scroll;
+  border: 1px solid black;
+}
+
+
+
 

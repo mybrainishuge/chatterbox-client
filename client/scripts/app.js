@@ -5,16 +5,11 @@ class App {
   constructor() {
     this.friends = {};
     this.server = 'https://api.parse.com/1/classes/messages';
+    this.messages = [];
   }
   init() {
-    // $('#send .submit').click( () => {
-    //   console.log('clicked');
-    //   this.handleSubmit();
-    // });
-
     $('#send').unbind('submit').bind('submit', (e) => {
       e.preventDefault();
-      console.log(e,'d');
       this.handleSubmit();
     });
   }
@@ -24,10 +19,10 @@ class App {
       type: 'POST',
       data: JSON.stringify(message),
       contentType: 'application/json',
-      success: function (data) {
+      success: (data) => {
         console.log('chatterbox: Message sent');
       },
-      error: function (data) {
+      error: (data) => {
         console.error('chatterbox: Failed to send message', data);
       }
     });
@@ -37,10 +32,12 @@ class App {
       url: this.server,
       type: 'GET',
       contentType: 'application/json',
-      success: function (data) {
+      success: (data) => {
         console.log('Data', data);
+        this.messages = data.results;
+        this.loadMessages();
       },
-      error: function (data) {
+      error: (data) => {
         console.error('chatterbox: Failed to send message', data);
       }
     });
@@ -50,8 +47,9 @@ class App {
   }
   addMessage(message) {
     var $newMessage = $(`<div><p><span class='username'>${message.username}</span>: ${message.text}</p></div>`);
-    $('#chats').prepend($newMessage);
+    $('#chats').append($newMessage);
     $newMessage.find('.username').click( () => { this.addFriend(message.username); });
+    $('.chat-window').animate({scrollTop: $('.chat-window').height() }, 300);
   }
   addRoom(room) {
     $('#roomSelect').append(`<option value="${room}">${room}</option>`);
@@ -60,7 +58,7 @@ class App {
     this.friends[username] = username;
   }
   handleSubmit() {
-    var username = window.location.search.split('=')[1];
+    var username = filterXSS(window.location.search.split('=')[1]);
     var message = filterXSS($('#message').val());
     var room = $('#roomSelect').val();
     console.log('once');
@@ -70,6 +68,16 @@ class App {
       text: message,
       room: room
     });
+  }
+  loadMessages() {
+    var newMessages = '';
+    this.messages.forEach(message => {
+      newMessages = `<div><p><span class='username'>${message.username}</span>: ${message.text}</p></div>${newMessages}`;
+    });
+    var $allMessages = $(newMessages);
+    $('#chats').append($allMessages);
+    $allMessages.find('.username').click( () => { this.addFriend(message.username); });
+    $('.chat-window').animate({scrollTop: $('.chat-window').height() }, 300);
   }
 }
 
