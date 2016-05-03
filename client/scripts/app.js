@@ -35,7 +35,8 @@ class App {
       success: (data) => {
         console.log('Data', data);
         this.messages = data.results;
-        this.loadMessages();
+        this.fetchMessages();
+        console.log(data);
       },
       error: (data) => {
         console.error('chatterbox: Failed to send message', data);
@@ -46,10 +47,7 @@ class App {
     $('#chats').html('');
   }
   addMessage(message) {
-    var $newMessage = $(`<div><p><span class='username'>${message.username}</span>: ${message.text}</p></div>`);
-    $('#chats').append($newMessage);
-    $newMessage.find('.username').click( () => { this.addFriend(message.username); });
-    $('.chat-window').animate({scrollTop: $('.chat-window').height() }, 300);
+    this.loadMessages(`<div><p><span class='username'>${message.username}</span>: ${message.text}</p></div>`);
   }
   addRoom(room) {
     $('#roomSelect').append(`<option value="${room}">${room}</option>`);
@@ -69,15 +67,18 @@ class App {
       room: room
     });
   }
-  loadMessages() {
+  fetchMessages() {
     var newMessages = '';
     this.messages.forEach(message => {
       newMessages = `<div><p><span class='username'>${message.username}</span>: ${message.text}</p></div>${newMessages}`;
     });
-    var $allMessages = $(newMessages);
+    this.loadMessages(newMessages);
+  }
+  loadMessages(messages) {
+    var $allMessages = $(messages);
     $('#chats').append($allMessages);
     $allMessages.find('.username').click( () => { this.addFriend(message.username); });
-    $('.chat-window').animate({scrollTop: $('.chat-window').height() }, 300);
+    $('.chat-window').animate({scrollTop: $('.chat-window')[0].scrollHeight }, 1000);
   }
 }
 
