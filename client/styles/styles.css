@@ -2,6 +2,7 @@
   font-family: matrix;
   src: url(OCRAEXT.TTF);
 }
+
 body {
   background-color: #4F90B2;
   font-family: Monaco;
@@ -31,7 +32,7 @@ body {
 
 @keyframes changeYellow {
   from {
-    color: #7F7F6B;
+    color: #636353;
   }
   to {
     color: #B57C08;
@@ -43,7 +44,7 @@ body {
     color: #B57C08;
   }
   to {
-    color: #7F7F6B;
+    color: #636353;
   }
 }
 
@@ -103,7 +104,7 @@ ul {
 }
 
 .room {
-  background-color: #7F7F6B;
+  background-color: #636353;
   height: 50px;
   line-height: 50px;
   margin: 0 0 10px 0;
@@ -111,15 +112,15 @@ ul {
 }
 
 .submission {
-  background-color: #7F7F6B;
+  background-color: #636353;
   line-height: 50px;
   height: 50px;
   box-shadow: 10px 10px 100px 0px rgba(0,0,0,0.75);
 }
 
 .friends-list, .rooms-list {
-  background-color: #7F7F6B;
-  color: #7F7F6B;
+  background-color: #636353;
+  color: #636353;
   height: 620px;
   width: 50%;
   box-shadow: 10px 10px 100px 0px rgba(0,0,0,0.75);
@@ -137,7 +138,6 @@ ul {
 }
 
 .friends-list:hover {
-  /*background-color: #FFE2BD;*/
   background-color: #202224;
   color: #175394;
   width: 180%;
@@ -148,6 +148,14 @@ ul {
   position: relative;
 }
 
+.friends-list .text-center {
+  margin-right: 10px;
+}
+
+.friends-list div {
+  cursor: pointer;
+}
+
 .rooms-list {
   padding-right: 10px;
   border-radius: 10px 0 0 10px;
@@ -155,9 +163,7 @@ ul {
 }
 
 .rooms-list:hover {
-  /*background-color: #FFE2BD;*/
   background-color: #202224;
-  /*color: black;*/
   color: green;
   width: 180%;
 }
@@ -166,12 +172,21 @@ ul {
   padding-right: 10px;
   position: relative;
 }
+
+#currentRoom {
+  color: #B57C08;
+}
+
+#roomSelect li {
+  cursor: pointer;
+}
+
 .rooms-list .text-center {
   margin-left: 10px;
 }
 
-.friends-list .text-center {
-  margin-right: 10px;
+#panel-title {
+  color: #636353;
 }
 
 .chat-window {
@@ -187,7 +202,6 @@ ul {
 .username {
   cursor: pointer;
 }
-
 
 .form-control {
   width: 50%;
@@ -207,6 +221,6 @@ ul {
   padding: 6px 0;
 }
 
-#roomSelect li {
-  cursor: pointer;
+input[type="text"], textarea {
+  background-color : #d1d1d1; 
 }

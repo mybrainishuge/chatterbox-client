@@ -47,6 +47,7 @@ class App {
       $('body').addClass('fade-back');
     });
 
+    this.fetch();
     setInterval(this.fetch.bind(this), 1000);
   }
 
@@ -128,7 +129,7 @@ class App {
     });
     var atBottom = $('.chat-window').scrollTop() + 500 === $('.chat-window')[0].scrollHeight;
     $('#chats').append($newMessages);
-    $('.chat-message').fadeIn(1000);
+    $('.chat-message').fadeIn(750);
     if ( $newMessages.length && atBottom) {
       $('.chat-window').animate({scrollTop: $('.chat-window')[0].scrollHeight }, 1000);
     }
