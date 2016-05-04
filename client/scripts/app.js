@@ -27,14 +27,24 @@ class App {
 
     $('.rooms-list').mouseenter( () => {
       var currRoom = $('#currentRoom').attr('data-current');
+      $('.rooms-list li').removeClass('text-green');
       $(`[data-room="${currRoom}"]`).addClass('text-yellow');
     }).mouseleave( () => {
       var currRoom = $('#currentRoom').attr('data-current');
       $('.rooms-list li').removeClass('text-yellow');
+      $(`[data-room="${currRoom}"]`).addClass('text-green');
     });
 
     $(`[data-room="The Abyss"]`).click( () => {
       this.changeRoom('The Abyss');
+    });
+
+    $('.title').mouseenter( () => {
+      $('body').removeClass('fade-back');
+      $('body').addClass('fade-title');
+    }).mouseleave( () => {
+      $('body').removeClass('fade-title');
+      $('body').addClass('fade-back');
     });
 
     setInterval(this.fetch.bind(this), 1000);
@@ -98,7 +108,7 @@ class App {
           if ( this.friends[this.messages[i].username] ) {
             cssClass += ' text-blue';
           }
-          newMessages = `<div><p><span class='${cssClass}' data-username="${filterXSS(this.messages[i].username)}">${filterXSS(this.messages[i].username)}</span>: ${filterXSS(this.messages[i].text)}</p></div>${newMessages}`;
+          newMessages = `<div class="chat-message"><p><span class='${cssClass}' data-username="${filterXSS(this.messages[i].username)}">${filterXSS(this.messages[i].username)}</span>: ${filterXSS(this.messages[i].text)}</p></div>${newMessages}`;
         }
         if (!this.rooms.hasOwnProperty(this.messages[i].roomname)) {
           this.addRoom(this.messages[i].roomname);
@@ -117,7 +127,8 @@ class App {
       this.addFriend(clickedUsername);
     });
     var atBottom = $('.chat-window').scrollTop() + 500 === $('.chat-window')[0].scrollHeight;
-    $('#chats').append($newMessages); 
+    $('#chats').append($newMessages);
+    $('.chat-message').fadeIn(1000);
     if ( $newMessages.length && atBottom) {
       $('.chat-window').animate({scrollTop: $('.chat-window')[0].scrollHeight }, 1000);
     }

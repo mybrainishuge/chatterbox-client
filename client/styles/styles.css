@@ -5,6 +5,7 @@
 body {
   background-color: #4F90B2;
   font-family: Monaco;
+  transition: background-color 1s cubic-bezier(0.43, 1.45, 1, 1);
 }
 
 .text-blue {
@@ -14,16 +15,35 @@ body {
 
 .text-yellow {
   font-weight: 900;
-  animation: changeYellow 1s linear;
+  animation: changeYellow 500ms linear;
+  animation-fill-mode: forwards;
+}
+
+.chat-message {
+  display: none;
+}
+
+.text-green {
+  font-weight: 900;
+  animation: changeGreen 500ms linear;
   animation-fill-mode: forwards;
 }
 
 @keyframes changeYellow {
   from {
-    color: green;
+    color: #7F7F6B;
   }
   to {
     color: #B57C08;
+  }
+}
+
+@keyframes changeGreen {
+  from {
+    color: #B57C08;
+  }
+  to {
+    color: #7F7F6B;
   }
 }
 
@@ -35,15 +55,44 @@ ul {
 .title {
   margin: 30px 0 30px 0;
   letter-spacing: 0px;
-  transition-property: letter-spacing, margin-right;
-  transition-duration: 500ms;
-  transition-timing-function: linear;
+  transition-property: letter-spacing, margin-right, color;
+  transition-duration: 800ms;
+  transition-timing-function: cubic-bezier(0.43, 1.45, 1, 1);
 }
 
 .title:hover {
+  color: #B57C08;
   letter-spacing: 100px;
   margin-right:-100px;
   border-radius: 10px;
+}
+
+.fade-title {
+  animation: fadeBlack 1s cubic-bezier(0.43, 1.45, 1, 1);
+  animation-fill-mode: forwards;
+}
+
+.fade-back {
+  animation: fadeBack 1s cubic-bezier(0.43, 1.45, 1, 1);
+  animation-fill-mode: forwards;
+}
+
+@keyframes fadeBack {
+  from {
+    background-color: #202224;
+  }
+  to {
+    background-color: #4F90B2;
+  }
+}
+
+@keyframes fadeBlack {
+  from {
+    background-color: #4F90B2;
+  }
+  to {
+    background-color: #202224;
+  }
 }
 
 #roomSelect {
@@ -76,7 +125,7 @@ ul {
   box-shadow: 10px 10px 100px 0px rgba(0,0,0,0.75);
   transition-property: width, color, background-color;
   transition-duration: 500ms;
-  transition-timing-function: linear;
+  transition-timing-function: cubic-bezier(0.43, 1.45, 1, 1);
   overflow: hidden;
   white-space: nowrap;
   position: absolute;
@@ -139,13 +188,23 @@ ul {
   cursor: pointer;
 }
 
+
 .form-control {
   width: 50%;
   display: inline-block;
 }
 
 .form-control#message {
-  width: 92%;
+  width: 100%;
+}
+
+.send-container {
+  padding: 0 10px 0 2px;
+}
+ 
+#send {
+  width: 100%;
+  padding: 6px 0;
 }
 
 #roomSelect li {
