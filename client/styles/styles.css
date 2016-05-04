@@ -1,10 +1,18 @@
+@font-face {
+  font-family: matrix;
+  src: url(OCRAEXT.TTF);
+}
 body {
   background-color: #4F90B2;
 }
 
+ul {
+  list-style-type: none;
+  padding: 0;
+}
 
-.title {
-
+#roomSelect {
+  text-align: right;
 }
 
 .room {
@@ -12,7 +20,6 @@ body {
   height: 50px;
   line-height: 50px;
   margin: 0 0 10px 0;
-  border-radius: 10px 0 0 0;
   box-shadow: 10px 10px 100px 0px rgba(0,0,0,0.75);
 }
 
@@ -20,20 +27,14 @@ body {
   background-color: #B29167;
   line-height: 50px;
   height: 50px;
-  border-radius: 0 0 0 10px;
   box-shadow: 10px 10px 100px 0px rgba(0,0,0,0.75);
 }
 
-
-.friends-list {
-  background-color: #A3DFFF;
-  color: #A3DFFF;
-  /*background-color: #B28751;
-  color: #B28751;*/
+.friends-list, .rooms-list {
+  background-color: #B29167;
+  color: #B29167;
   height: 620px;
-  width: 40%;
-  padding-left: 10px;
-  border-radius: 0 10px 10px 0;
+  width: 50%;
   box-shadow: 10px 10px 100px 0px rgba(0,0,0,0.75);
   transition-property: width, color, background-color;
   transition-duration: 500ms;
@@ -43,10 +44,15 @@ body {
   position: absolute;
 }
 
+.friends-list {
+  padding-left: 10px;
+  border-radius: 0 10px 10px 0;
+}
+
 .friends-list:hover {
   background-color: #FFE2BD;
   color: black;
-  width: 150%;
+  width: 180%;
 }
 
 .friends {
@@ -54,8 +60,35 @@ body {
   position: relative;
 }
 
-.chat-window {
+.rooms-list {
+  padding-right: 10px;
+  border-radius: 10px 0 0 10px;
+  right: 10px;
+}
+
+.rooms-list:hover {
   background-color: #FFE2BD;
+  color: black;
+  width: 180%;
+}
+
+.rooms {
+  padding-right: 10px;
+  position: relative;
+}
+.rooms-list .text-center {
+  margin-left: 10px;
+}
+
+.friends-list .text-center {
+  margin-right: 10px;
+}
+
+.chat-window {
+  /*background-color: #FFE2BD;*/
+  font-family: matrix;
+  background-color: #202224;
+  color: green;
   height: 500px;
   overflow-y: scroll;
   margin: 0 0 10px 0;
@@ -64,14 +97,6 @@ body {
 
 .username {
   cursor: pointer;
-}
-
-#add-room {
-
-}
-
-#room-name {
-
 }
 
 .form-control {
@@ -85,4 +110,9 @@ body {
 
 .text-bold {
   font-weight: 900;
+  color: #175394;
+}
+
+#roomSelect li {
+  cursor: pointer;
 }

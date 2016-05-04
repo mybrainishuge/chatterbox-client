@@ -1,11 +1,12 @@
-// YOUR CODE HERE:
 class App {
   constructor() {
-    this.friends = {};
     this.server = 'https://api.parse.com/1/classes/messages';
+    this.friends = {};
+    this.rooms = {
+      'The Abyss': 'The Abyss'
+    };
     this.messages = [];
     this.lastUpdated = null;
-    this.rooms = {};
   }
 
   // Initialize application
@@ -14,18 +15,20 @@ class App {
       e.preventDefault();
       this.handleSubmit();
     });
-    $('#roomSelect').unbind('change').bind('change', (e) => {
-      e.preventDefault();
-      this.clearMessages();
-    });
+
     $('#add-room').unbind('click').bind('click', (e) => {
       e.preventDefault();
       var $newRoom = $('#room-name').val();
       this.addRoom($newRoom);
-      $('#roomSelect').val($newRoom);
+      this.changeRoom($newRoom);
       $('#room-name').val('');
       this.clearMessages();
     });
+
+    $(`[data-room="The Abyss"]`).click( () => {
+      this.changeRoom('The Abyss');
+    });
+
     setInterval(this.fetch.bind(this), 1000);
   }
 
@@ -82,7 +85,7 @@ class App {
       if ( this.messages[i].objectId === this.lastUpdated) {
         i = this.messages.length;
       } else if ( this.messages[i].username && this.messages[i].text && this.messages[i].roomname ) {
-        if (this.messages[i].roomname === $('#roomSelect').val() || $('#roomSelect').val() === 'abyss') {
+        if (this.messages[i].roomname === $('#currentRoom').attr('data-current') || $('#currentRoom').attr('data-current') === 'The Abyss') {
           var cssClass = 'username';
           if ( this.friends[this.messages[i].username] ) {
             cssClass += ' text-bold';
@@ -101,43 +104,57 @@ class App {
   // Load messages onto the chat window
   loadMessages(messages) {
     var $newMessages = $(messages);
-    
     $newMessages.find('.username').on( 'click', (event) => { 
       var clickedUsername = $(event.currentTarget).attr('data-username');
-      this.addFriend(clickedUsername); 
-      $(`.username[data-username="${clickedUsername}"`).addClass('text-bold');
+      this.addFriend(clickedUsername);
     });
     var atBottom = $('.chat-window').scrollTop() + 500 === $('.chat-window')[0].scrollHeight;
     $('#chats').append($newMessages); 
     if ( $newMessages.length && atBottom) {
       $('.chat-window').animate({scrollTop: $('.chat-window')[0].scrollHeight }, 1000);
     }
-    // var friendMessages = $('.username').filter( (element) => {
-    //   return this.friends.hasOwnProperty(element.attr('data-username'));
-    // });
-    // friendMessages.addClass('text-bold');
   }
 
   // Add a new room
   addRoom(room) {
     var filteredRoom = filterXSS(room);
-    $('#roomSelect').append(`<option value="${filteredRoom}">${filteredRoom}</option>`);
+    $('#roomSelect').append(`<li data-room="${filteredRoom}">${filteredRoom}</li>`);
     this.rooms[filteredRoom] = filteredRoom;
+    $(`[data-room="${filteredRoom}"]`).click( () => {
+      this.changeRoom(filteredRoom);
+    });
+  }
+
+  changeRoom(room) {
+    $('#currentRoom').attr('data-current', room).html(room);
+    this.clearMessages();
+    this.lastUpdated = null;
+    this.fetch();
   }
 
   // Add a friend
   addFriend(username) {
     if (!this.friends.hasOwnProperty(username) && username !== window.location.search.split('=')[1].replace(/%20/g, ' ')) {
-      this.friends[username] = `<div>${username}</div>`;
+      this.friends[username] = $(`<div data-username='${username}'>${username}</div>`);
+      $(`.username[data-username="${username}"]`).addClass('text-bold');
       $('.friends-list').append(this.friends[username]);
+      this.friends[username].click( (event) => {
+        this.removeFriend($(event.currentTarget).attr('data-username'));
+      });
     }
+  }
+
+  removeFriend(username) {
+    $(`.friends-list [data-username="${username}"]`).remove();
+    $(`.username[data-username="${username}"]`).removeClass('text-bold');
+    delete this.friends[username];
   }
 
   // Handle message submission
   handleSubmit() {
     var username = filterXSS(window.location.search.split('=')[1]).replace(/%20/g, ' ');
     var message = $('#message').val();
-    var room = $('#roomSelect').val();
+    var room = $('#currentRoom').attr('data-current');
 
     this.addMessage({
       username: username,
