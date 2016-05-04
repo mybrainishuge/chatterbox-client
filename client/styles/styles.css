@@ -108,14 +108,14 @@ ul {
   height: 50px;
   line-height: 50px;
   margin: 0 0 10px 0;
-  box-shadow: 10px 10px 100px 0px rgba(0,0,0,0.75);
+  box-shadow: 10px -10px 100px 1px rgba(0,0,0,0.60);
 }
 
 .submission {
   background-color: #636353;
   line-height: 50px;
   height: 50px;
-  box-shadow: 10px 10px 100px 0px rgba(0,0,0,0.75);
+  box-shadow: 10px 10px 100px 1px rgba(0,0,0,0.75);
 }
 
 .friends-list, .rooms-list {
@@ -123,7 +123,7 @@ ul {
   color: #636353;
   height: 620px;
   width: 50%;
-  box-shadow: 10px 10px 100px 0px rgba(0,0,0,0.75);
+  /*box-shadow: 0px 0px 100px 1px rgba(0,0,0,0.75);*/
   transition-property: width, color, background-color;
   transition-duration: 500ms;
   transition-timing-function: cubic-bezier(0.43, 1.45, 1, 1);
@@ -135,6 +135,7 @@ ul {
 .friends-list {
   padding-left: 10px;
   border-radius: 0 10px 10px 0;
+  box-shadow: 10px 10px 100px 1px rgba(0,0,0,0.75);
 }
 
 .friends-list:hover {
@@ -160,6 +161,7 @@ ul {
   padding-right: 10px;
   border-radius: 10px 0 0 10px;
   right: 10px;
+  box-shadow: -10px 10px 100px 1px rgba(0,0,0,0.75);
 }
 
 .rooms-list:hover {
@@ -191,12 +193,14 @@ ul {
 
 .chat-window {
   font-family: matrix;
-  background-color: #202224;
+  /*background-color: #202224;*/
+  background-color: rgba(32, 34, 36, 0.75);
   color: green;
   height: 500px;
   overflow-y: scroll;
   margin: 0 0 10px 0;
-  box-shadow: 10px 10px 100px 0px rgba(0,0,0,0.75);
+  box-shadow: inset 0px 0px 125px 1px rgba(0,0,0,0.75);
+  border-radius: 10px;
 }
 
 .username {
