@@ -25,6 +25,14 @@ class App {
       this.clearMessages();
     });
 
+    $('.rooms-list').mouseenter( () => {
+      var currRoom = $('#currentRoom').attr('data-current');
+      $(`[data-room="${currRoom}"]`).addClass('text-yellow');
+    }).mouseleave( () => {
+      var currRoom = $('#currentRoom').attr('data-current');
+      $('.rooms-list li').removeClass('text-yellow');
+    });
+
     $(`[data-room="The Abyss"]`).click( () => {
       this.changeRoom('The Abyss');
     });
@@ -88,7 +96,7 @@ class App {
         if (this.messages[i].roomname === $('#currentRoom').attr('data-current') || $('#currentRoom').attr('data-current') === 'The Abyss') {
           var cssClass = 'username';
           if ( this.friends[this.messages[i].username] ) {
-            cssClass += ' text-bold';
+            cssClass += ' text-blue';
           }
           newMessages = `<div><p><span class='${cssClass}' data-username="${filterXSS(this.messages[i].username)}">${filterXSS(this.messages[i].username)}</span>: ${filterXSS(this.messages[i].text)}</p></div>${newMessages}`;
         }
@@ -120,8 +128,10 @@ class App {
     var filteredRoom = filterXSS(room);
     $('#roomSelect').append(`<li data-room="${filteredRoom}">${filteredRoom}</li>`);
     this.rooms[filteredRoom] = filteredRoom;
-    $(`[data-room="${filteredRoom}"]`).click( () => {
+    $(`[data-room="${filteredRoom}"]`).click( (event) => {
       this.changeRoom(filteredRoom);
+      $('#roomSelect li').removeClass('text-yellow');
+      $(event.currentTarget).addClass('text-yellow');
     });
   }
 
@@ -136,7 +146,7 @@ class App {
   addFriend(username) {
     if (!this.friends.hasOwnProperty(username) && username !== window.location.search.split('=')[1].replace(/%20/g, ' ')) {
       this.friends[username] = $(`<div data-username='${username}'>${username}</div>`);
-      $(`.username[data-username="${username}"]`).addClass('text-bold');
+      $(`.username[data-username="${username}"]`).addClass('text-blue');
       $('.friends-list').append(this.friends[username]);
       this.friends[username].click( (event) => {
         this.removeFriend($(event.currentTarget).attr('data-username'));
@@ -146,7 +156,7 @@ class App {
 
   removeFriend(username) {
     $(`.friends-list [data-username="${username}"]`).remove();
-    $(`.username[data-username="${username}"]`).removeClass('text-bold');
+    $(`.username[data-username="${username}"]`).removeClass('text-blue');
     delete this.friends[username];
   }
 

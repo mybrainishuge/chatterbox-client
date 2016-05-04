@@ -4,6 +4,27 @@
 }
 body {
   background-color: #4F90B2;
+  font-family: Monaco;
+}
+
+.text-blue {
+  font-weight: 900;
+  color: #175394;
+}
+
+.text-yellow {
+  font-weight: 900;
+  animation: changeYellow 1s linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes changeYellow {
+  from {
+    color: green;
+  }
+  to {
+    color: #B57C08;
+  }
 }
 
 ul {
@@ -11,12 +32,29 @@ ul {
   padding: 0;
 }
 
+.title {
+  margin: 30px 0 30px 0;
+  letter-spacing: 0px;
+  transition-property: letter-spacing, margin-right;
+  transition-duration: 500ms;
+  transition-timing-function: linear;
+}
+
+.title:hover {
+  letter-spacing: 100px;
+  margin-right:-100px;
+  border-radius: 10px;
+}
+
 #roomSelect {
   text-align: right;
 }
 
+#roomSelect li {
+}
+
 .room {
-  background-color: #B29167;
+  background-color: #7F7F6B;
   height: 50px;
   line-height: 50px;
   margin: 0 0 10px 0;
@@ -24,15 +62,15 @@ ul {
 }
 
 .submission {
-  background-color: #B29167;
+  background-color: #7F7F6B;
   line-height: 50px;
   height: 50px;
   box-shadow: 10px 10px 100px 0px rgba(0,0,0,0.75);
 }
 
 .friends-list, .rooms-list {
-  background-color: #B29167;
-  color: #B29167;
+  background-color: #7F7F6B;
+  color: #7F7F6B;
   height: 620px;
   width: 50%;
   box-shadow: 10px 10px 100px 0px rgba(0,0,0,0.75);
@@ -50,8 +88,9 @@ ul {
 }
 
 .friends-list:hover {
-  background-color: #FFE2BD;
-  color: black;
+  /*background-color: #FFE2BD;*/
+  background-color: #202224;
+  color: #175394;
   width: 180%;
 }
 
@@ -67,8 +106,10 @@ ul {
 }
 
 .rooms-list:hover {
-  background-color: #FFE2BD;
-  color: black;
+  /*background-color: #FFE2BD;*/
+  background-color: #202224;
+  /*color: black;*/
+  color: green;
   width: 180%;
 }
 
@@ -85,7 +126,6 @@ ul {
 }
 
 .chat-window {
-  /*background-color: #FFE2BD;*/
   font-family: matrix;
   background-color: #202224;
   color: green;
@@ -106,11 +146,6 @@ ul {
 
 .form-control#message {
   width: 92%;
-}
-
-.text-bold {
-  font-weight: 900;
-  color: #175394;
 }
 
 #roomSelect li {
